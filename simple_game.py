@@ -29,18 +29,10 @@ def main_model(num_start,num_stop,max_time,type_same,type_int):#num_start最小�
     if guess == right:
         gui.msgbox(msg="太厉害了！你尽然第一次就答对了！不过答对了也没有奖励的哦！",title="猜数字小游戏",ok_button="太棒了！")
     else:
-        while True:
-            if guess == right:
-                gui.msgbox(msg="恭喜你，终于答对了！正确答案就是："+str(right)+"\n你尽然只用了"+str(time)+"次就答对了！\n真是不可思议！",title="猜数字小游戏",ok_button="太棒了！")
-                break
-            elif guess != right and time <= 5:
-                print_str = "再悄悄告诉你：你的数字太小了~" if guess < right else "再悄悄告诉你：你的数字太大了~"
-                guess = type_same(gui.enterbox(msg="不对哦，答案不是"+str(guess)+"您还有"+str(max_time - time)+"次机会！"+print_str+"再尝试一下：",title="猜数字小游戏"))
-                time += 1
-                continue
-            elif guess != right and time > 5:
-               gui.msgbox(msg="哎呀，都答错了！正确答案是：" + str(right),title="猜数字小游戏",ok_button="好吧！")
-               break
+        while ( time <= max_time ) and ( guess != right ):
+            guess = type_same(gui.enterbox(msg="不对哦，答案不是"+str(guess)+"您还有"+str(max_time - time)+"次机会！"+"再悄悄告诉你：你的数字太小了~" if guess < right else "再悄悄告诉你：你的数字太大了~"+"再尝试一下：",title="猜数字小游戏"))
+            time += 1
+        gui.msgbox(msg="恭喜你，终于答对了！正确答案就是："+str(right)+"\n你尽然只用了"+str(time)+"次就答对了！\n真是不可思议！",title="猜数字小游戏",ok_button="太棒了！") if guess == right else gui.msgbox(msg="哎呀，都答错了！正确答案是：" + str(right),title="猜数字小游戏",ok_button="好吧！")
 ###函数-结束###
 
 try:
@@ -63,7 +55,7 @@ try:
 
     ###模式四-开始###
     elif model == "自定义":
-        type_same = float if gui.ccbox(msg='是否开启魔鬼模式？', title='猜数字小游戏', choices=["是","否"]) == "是" else int
+        type_same = int if gui.ccbox(msg='是否开启魔鬼模式？', title='猜数字小游戏', choices=["是","否"]) == "否" else float  ###本句存在未知问题
         type_int = "no" if type_same == float else "yes"
         num_start = float(gui.enterbox(msg='请输入随机数的范围的最小值（请输入一个数字）:', title='猜数字小游戏', default='1', strip=True, image=None, root=None))
         num_stop = float(gui.enterbox(msg='请输入随机数的范围的最大值（请输入一个数字）:', title='猜数字小游戏', default='5', strip=True, image=None, root=None))
@@ -71,8 +63,8 @@ try:
         main_model(num_start,num_stop,max_time,type_same,type_int)
     ###模式四-结束###
 
-except (ValueError):
-    gui.msgbox(msg="鱼肠！\n出现错误！请重新开始！",title="猜数字小游戏",ok_button="emmmmm")
+except (ValueError,TypeError):
+    gui.msgbox(msg="鱼肠！\n出现错误！请重新开始！\n",title="猜数字小游戏",ok_button="emmmmm")
 
 ###防止程序运行结束后自动关闭###
 gui.msgbox(msg="欢迎下次再来玩哦~",title="猜数字小游戏",ok_button="知道啦！")
