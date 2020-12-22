@@ -25,6 +25,6 @@ while online == "在线":
     elif num > 16:
         main(5)
     choice = gui.ccbox(msg="是否继续该程序？",title="深圳通+",choices=("继续","结束"),default_choice="继续",cancel_choice="结束")
-    if choice == "结束":
+    if choice == "结束": #无法退出循环！未知原因！
         online = "离线"
 gui.msgbox(msg="已退出程序，欢迎下次使用QWQ",title="深圳通+",ok_button="了解！")
